@@ -1,5 +1,5 @@
 {
-  "name": "webvr",
+  "name": "webscreenvr",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
