@@ -1,6 +1,6 @@
 # WebScreenVR (Developer Version)
 
-*WebScreenVR is still in Developer Version which means that install and using it requires advanced knowledge and it may contains bugs.*
+*WebScreenVR is still in Developer Version which means that installing and using it requires advanced knowledge and it may contains bugs.*
 
 **It only works with Oculus Rift for the moment**
 
