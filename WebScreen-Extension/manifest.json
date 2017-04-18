@@ -1,0 +1,21 @@
+{
+   "background": {
+      "persistent": true,
+      "scripts": [ "background.js" ]
+   },
+   "content_scripts": [ {
+      "js": [ "content_script.js" ],
+      "matches": [ "\u003Call_urls>" ]
+   } ],
+   "description": "",
+   "externally_connectable": {
+      "ids": "*",
+      "matches": ["*://webscreenvr.dev/*"]
+   },
+   "manifest_version": 2,
+   "minimum_chrome_version": "38",
+   "name": "WebScreen",
+   "permissions": [ "desktopCapture", "\u003Call_urls>" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.0.1"
+}
