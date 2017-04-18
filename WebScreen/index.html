@@ -15,10 +15,7 @@
   <body>
     <a-scene id="scene">
       <a-assets>
-        <img id="boxTexture"    src="assets/images/mYmmbrp.jpg">
-        <img id="groundTexture" src="assets/images/floor.jpg">
-        <img id="skyTexture"    src="assets/images/sky.jpg">
-        <img id="bigPicture"    src="assets/images/env01.jpg">
+        <img id="environment" src="assets/images/env0.jpg">
       </a-assets>
 
       <a-camera></a-camera>
@@ -27,7 +24,7 @@
 
       <a-video height="3" width="6" position="0 1.5 -5" class="desktop" id="video"></a-video>
 
-      <a-sky src="#bigPicture" rotation="0 -130 0"></a-sky>
+      <a-sky src="#environment" rotation="0 -130 0"></a-sky>
     </a-scene>
 
     <script src="core.js"></script>

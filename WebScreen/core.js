@@ -5,8 +5,10 @@ const LEFT_CONTROLLER   = document.querySelector("#leftController");
 const RIGHT_CONTROLLER  = document.querySelector("#rightController");
 
 /* System variables */
-var _constructionMode = false;
-var _videoSelected    = false;
+var _constructionMode   = false;
+var _changeEnvironment  = false;
+var _videoSelected      = false;
+var _environments       = ["env0.jpg","env1.jpeg"];
 
 /* System core */
 window.addEventListener("load", function(){
@@ -73,22 +75,60 @@ window.addEventListener("load", function(){
   //##################//
 
   LEFT_CONTROLLER.addEventListener("Xdown", function(evt) {
-    if(!_videoSelected) return;
+    if(!_videoSelected && _changeEnvironment === false) return;
 
-    _videoSelected.setAttribute("height"  ,   Number(_videoSelected.getAttribute("height")) + 0.5);
-    _videoSelected.setAttribute("width"   ,   Number(_videoSelected.getAttribute("width"))  + 0.5);
+    if(_videoSelected) {
+      _videoSelected.setAttribute("height"  ,   Number(_videoSelected.getAttribute("height")) + 0.5);
+      _videoSelected.setAttribute("width"   ,   Number(_videoSelected.getAttribute("width"))  + 0.5);
+    }
+
+    if(_changeEnvironment !== false) {
+      _changeEnvironment = (_environments[_changeEnvironment+1] === undefined) ? 0 : _changeEnvironment + 1;
+      document.querySelector("a-sphere").setAttribute("src", "assets/images/" + _environments[_changeEnvironment]);
+    }
   })
 
   LEFT_CONTROLLER.addEventListener("Ydown", function(evt) {
-    if(!_videoSelected) return;
+    if(!_videoSelected && _changeEnvironment === false) return;
 
-    _videoSelected.setAttribute("height"  ,   Number(_videoSelected.getAttribute("height")) - 0.5);
-    _videoSelected.setAttribute("width"   ,   Number(_videoSelected.getAttribute("width"))  - 0.5);
+    if(_videoSelected) {
+      _videoSelected.setAttribute("height"  ,   Number(_videoSelected.getAttribute("height")) - 0.5);
+      _videoSelected.setAttribute("width"   ,   Number(_videoSelected.getAttribute("width"))  - 0.5);
+    }
+
+    if(_changeEnvironment !== false) {
+      console.dir(_environments[_changeEnvironment-1]);
+      _changeEnvironment = (_environments[_changeEnvironment-1] === undefined) ? _environments.length-1 : _changeEnvironment - 1;
+      console.dir(_changeEnvironment);
+      document.querySelector("a-sphere").setAttribute("src", "assets/images/" + _environments[_changeEnvironment]);
+    }
+    
+  })
+
+  LEFT_CONTROLLER.addEventListener("triggerdown", function(evt) {
+    if(_videoSelected) return; // Preventing multi actions from the user 
+
+    if(_changeEnvironment === false) {
+      var sphereEnvironment = document.createElement("a-sphere");
+      sphereEnvironment.setAttribute("src", "assets/images/" + _environments[0]);
+      sphereEnvironment.setAttribute("radius", "0.4");
+      sphereEnvironment.setAttribute("position", "0 0 -0.7");
+      sphereEnvironment.setAttribute("opacity", "0.5");
+      LEFT_CONTROLLER.appendChild(sphereEnvironment);
+
+      _changeEnvironment = 0;
+    } else {
+      document.querySelector("a-sky").setAttribute("src", "assets/images/" + _environments[_changeEnvironment]);
+      LEFT_CONTROLLER.removeChild(document.querySelector("a-sphere"));
+      _changeEnvironment = false;
+    }
   })
 
   // FUNCTIONS
   function toggleConstructionMode() {
     if(_videoSelected) return; // If the user is moving a screen
+    if(_changeEnvironment) return; // If the user is changing environment
+
     // If the player is not in "construction mode"
     if(!_constructionMode) {
       // We build the blue wireframe
@@ -145,7 +185,7 @@ window.addEventListener("message", function(event) {
       break;
     case "webVrExtensionDetected":
       // Initialize the first screen
-      window.postMessage({ name: 'webVrStartCasting', newScreenId: "desktop" }, '*')
+      window.postMessage({ name: 'webVrStartCastinga', newScreenId: "desktop" }, '*')
       break;
   }
 });

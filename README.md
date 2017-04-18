@@ -36,9 +36,16 @@ Once you have shared the initial screen and you are inside the VR view with your
 * **A**: 
     * Add screen (*in "construction mode*)
     * Target an existing screen and stay pressed on A to move it
-* **X**: Enhance size of the selected screen
-* **Y**: Reduce size of the selected screen
+* **X**: 
+	* Enhance size of the selected screen
+	* Go to next environment sphere
+* **Y**: 
+	* Reduce size of the selected screen
+	* Go to previous environment sphere
 * **Thumbstick**: Teleport yourself
+* **Left trigger**: 
+	* Show environments sphere on first press
+	* Change environment on second press
 
 ### How to contribute
 
@@ -51,7 +58,6 @@ Whatever you feel adding would be great. Additionnally feel free to help on the 
 
 ### What is really next?
 
-* Multiple environments
 * Debug the resizing functionality (dimensions are not good)
 * Add curves? 
 * Compatibility with Vive
