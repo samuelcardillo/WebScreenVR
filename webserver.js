@@ -11,6 +11,6 @@ var express = require("express")
 		cert: fs.readFileSync('server.crt')
 	}, app).listen(443);
 
-app.use('/', express.static(path.join(__dirname, 'code')));
+app.use('/', express.static(path.join(__dirname, 'WebScreen')));
 
 console.log("Local web server launched on HTTP & HTTPS.");

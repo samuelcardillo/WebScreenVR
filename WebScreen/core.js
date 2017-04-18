@@ -26,10 +26,7 @@ window.addEventListener("load", function(){
     _videoSelected    = evt.detail.intersectedEl;
 
     // Adjust position
-    _adjustedPosition    = _videoSelected.object3D.position;
-    _adjustedPosition.y  = 0;
-    _adjustedPosition.x  = 0;
-    _adjustedPosition.z  = -5;
+    _adjustedPosition = { x: 0, y: 0, z: -5 }
     _videoSelected.setAttribute('rotation'  , "0 0 0")
     _videoSelected.setAttribute("position"  , AFRAME.utils.coordinates.stringify(_adjustedPosition)) 
 
@@ -44,7 +41,6 @@ window.addEventListener("load", function(){
 
     RIGHT_CONTROLLER.removeChild(_videoSelected);
     SCENE.appendChild(_videoSelected);
-    _videoSelected = document.querySelector("." + _videoSelected.className)
 
     _videoSelected.setAttribute("position", evt.detail.intersection.point);
     _videoSelected.setAttribute("rotation", AFRAME.utils.coordinates.stringify(RIGHT_CONTROLLER.components.rotation.data));
