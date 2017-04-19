@@ -189,3 +189,8 @@ window.addEventListener("message", function(event) {
       break;
   }
 });
+
+// When WebRTC is connected
+function onConnect () {
+  NAF.entities.createAvatar('#avatar-template', '0 1.6 0', '0 0 0');
+}

@@ -6,14 +6,26 @@
     <title>WebScreen</title>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
-    <link href="http://polygit.org/components/polymer/polymer.html" rel="import">
     <script src="assets/scripts/aframe.min.js"></script> 
     <script src="assets/scripts/aframe-teleport-controls.min.js"></script>
     <script src="assets/scripts/aframe-controller-cursor-component.js"></script>
+
+    <!-- Multiplayer features !-->
+    <script src="assets/scripts/socket.io.min.js"></script>
+    <script src="assets/scripts/easyrtc.js"></script>
+    <script src="assets/scripts/networked-aframe.js"></script>
     </style>
   </head>
   <body>
-    <a-scene id="scene">
+    <a-scene id="scene" network-scene="
+        app: webscreenvr;
+        room: roomOne;
+        audio: false;
+        debug: false;
+        onConnect: onConnect;
+        connectOnLoad: true;
+        signalURL: /;
+      ">
       <a-assets>
         <img id="environment" src="assets/images/env0.jpg">
       </a-assets>
@@ -25,6 +37,14 @@
       <a-video height="3" width="6" position="0 1.5 -5" class="desktop" id="video"></a-video>
 
       <a-sky src="#environment" rotation="0 -130 0"></a-sky>
+
+      <script id="avatar-template" type="text/html">
+        <a-sphere color="blue" radius="0.5">
+          <a-sphere color="white" radius="0.1" position="0.2 0.1 -0.4"></a-sphere>
+          <a-sphere color="white" radius="0.1" position="-0.2 0.1 -0.4"></a-sphere>
+        </a-sphere>
+      </script>
+
     </a-scene>
 
     <script src="core.js"></script>
