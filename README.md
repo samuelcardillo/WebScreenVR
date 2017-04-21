@@ -6,7 +6,7 @@
 
 ### What is WebScreenVR ?
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/qfFrcjQn-0A/0.jpg)](https://www.youtube.com/watch?v=qfFrcjQn-0A "WebScreenVR - Poc 2")
-It is a "clone" of BigScreen using web technologies. It allows you to have multiple screens where you on which you can cast your desktop and applications in a 3D environment. 
+It is a "clone" of BigScreen using web technologies. It allows you to have multiple screens around you on which you can cast your desktop and applications in a 3D environment. 
 
 ### How to install it? 
 
@@ -60,6 +60,7 @@ Whatever you feel adding would be great. Additionnally feel free to help on the 
 
 * Debug the resizing functionality (dimensions are not good)
 * Add curves? 
+* Add Firefox extension to extend compatibility with browsers
 * Compatibility with Vive
 * Multiplayer (using WebRTC)
 * Other things as well
