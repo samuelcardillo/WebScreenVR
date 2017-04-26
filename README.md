@@ -6,7 +6,8 @@
 
 ### What is WebScreenVR ?
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/qfFrcjQn-0A/0.jpg)](https://www.youtube.com/watch?v=qfFrcjQn-0A "WebScreenVR - Poc 2")
-It is a "clone" of BigScreen using web technologies. It allows you to have multiple screens around you on which you can cast your desktop and applications in a 3D environment. 
+
+The goal of **WebScreenVR** is to enhance your workspace while in Virtual Reality, allowing you to cast your screen and different applications around you in a 3D environment.
 
 ### How to install it? 
 
@@ -18,7 +19,7 @@ Sharing the screen on **Chrome** require an **extension** to allow screen castin
 
 * On Firefox: 
 
-Firefox natively allow screensharing but doesn't allow more than one stream (*two thanks to a little trick visible in **core.js**).
+Firefox natively allow screensharing but doesn't allow more than one stream (*two thanks to a little trick visible in **core.js** *).
  
 
 #### 2. Setting up local HTTPS environment
