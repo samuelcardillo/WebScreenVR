@@ -5,14 +5,18 @@ const LEFT_CONTROLLER   = document.querySelector("#leftController");
 const RIGHT_CONTROLLER  = document.querySelector("#rightController");
 
 /* System variables */
+var _isFirefox          = (!!navigator.mozGetUserMedia) ? true : false;
 var _constructionMode   = false;
 var _changeEnvironment  = false;
 var _videoSelected      = false;
 var _environments       = ["env0.jpg","env1.jpeg"];
 
+function onConnect () {
+   NAF.entities.createAvatar('#avatar-template', "scene", '0 1.6 0', '0 0 0');
+}
+
 /* System core */
 window.addEventListener("load", function(){
-
   //#####################//
   /** RIGHT CONTROLLER **/
   //###################//
@@ -23,7 +27,7 @@ window.addEventListener("load", function(){
 
   RIGHT_CONTROLLER.addEventListener("mousedown", function(evt) {
     if(evt.detail.intersectedEl === null || evt.detail.intersectedEl === undefined) return;
-    
+  
     if(evt.detail.intersectedEl.id != "video") return;
     _videoSelected    = evt.detail.intersectedEl;
 
@@ -67,7 +71,8 @@ window.addEventListener("load", function(){
 
     toggleConstructionMode();
 
-    window.postMessage({ name: 'webVrStartCasting', newScreenId: newScreenId }, '*')
+    // We verify if its Firefox or not for the screen sharing
+    (_isFirefox) ? shareScreen(newScreenId, "") : window.postMessage({ name: 'webVrStartCasting', newScreenId: newScreenId }, '*');
   });
 
   //####################//
@@ -97,9 +102,7 @@ window.addEventListener("load", function(){
     }
 
     if(_changeEnvironment !== false) {
-      console.dir(_environments[_changeEnvironment-1]);
       _changeEnvironment = (_environments[_changeEnvironment-1] === undefined) ? _environments.length-1 : _changeEnvironment - 1;
-      console.dir(_changeEnvironment);
       document.querySelector("a-sphere").setAttribute("src", "assets/images/" + _environments[_changeEnvironment]);
     }
     
@@ -155,7 +158,51 @@ window.addEventListener("load", function(){
   }
 });
 
-// Talking with the Chrome Extension
+// Screen sharing operations
+if(_isFirefox) shareScreen("desktop"); // If its Firefox we have to directly called the function
+
+// Function that handle the different browser cases for screen sharing
+function shareScreen(screenId, eventId) {
+  var constraints, mediaToCapture;
+
+  // We check whether its Chrome or Firefox to apply different constraints
+  if(_isFirefox) { // If its Firefox
+    // This "trick" allow us to capture two streams from Firefox
+    mediaToCapture = (screenId == "desktop") ? "screen" : "window";
+
+    constraints = {
+      audio: false,
+      video: {
+        mozMediaSource: mediaToCapture,
+        mediaSource: mediaToCapture
+      }
+    }
+  } else { // If its Chrome
+    mediaToCapture = "desktop";
+
+    constraints = {
+      audio: false,
+      video: {
+        mandatory: {
+          chromeMediaSource: mediaToCapture,
+          chromeMediaSourceId: eventId,
+          maxWidth: window.screen.width,
+          maxHeight: window.screen.height
+        }
+      }
+    }
+  }
+
+  // We call getUserMedia to get a stream
+  navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+    // And we transfrom the stream to a blob that we apply as a source on the selected screen
+    document.querySelector("." + screenId).setAttribute("src", URL.createObjectURL(stream));
+  }).catch(function(err) {
+    console.log(err);
+  });
+}
+
+// The application wait for the WebScreenVR extension to send a message
 window.addEventListener("message", function(event) {
   var _eventName = event.data.name;
 
@@ -163,34 +210,11 @@ window.addEventListener("message", function(event) {
   if (event.source != window) return;
 
   switch(_eventName) {
-    case "webVrCasting":
-      var constraints = {
-        audio: false,
-        video: {
-          mandatory: {
-            chromeMediaSource: 'desktop',
-            chromeMediaSourceId: event.data.id,
-            maxWidth: window.screen.width,
-            maxHeight: window.screen.height
-          }
-        }
-      }
-
-      navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
-        console.dir(event.data.newScreenId);
-        document.querySelector("." + event.data.newScreenId).setAttribute("src", URL.createObjectURL(stream));
-      }).catch(function(err) {
-        console.log(err);
-      });
+    case "webVrCasting": // If a web cast has been approved, we add the stream to a screen
+      shareScreen(event.data.newScreenId, event.data.id);
       break;
-    case "webVrExtensionDetected":
-      // Initialize the first screen
-      window.postMessage({ name: 'webVrStartCastinga', newScreenId: "desktop" }, '*')
+    case "webVrExtensionDetected": // If the extension is detected, we initiate the first screen
+      window.postMessage({ name: 'webVrStartCasting', newScreenId: "desktop" }, '*')
       break;
   }
 });
-
-// When WebRTC is connected
-function onConnect () {
-  NAF.entities.createAvatar('#avatar-template', '0 1.6 0', '0 0 0');
-}

@@ -10,9 +10,16 @@ It is a "clone" of BigScreen using web technologies. It allows you to have multi
 
 ### How to install it? 
 
-#### 1. Chrome Extension 
+#### 1. Share screen
 
-WebScreenVR require a **Chrome extension** to allow screen casting. Go on Extensions and enable the developer mode then click on "`Load unpacked extension`" and select the "`WebScreen-Extension`" folder. 
+* On Chrome: 
+
+Sharing the screen on **Chrome** require an **extension** to allow screen casting. Go on Extensions and enable the developer mode then click on "`Load unpacked extension`" and select the "`WebScreen-Extension`" folder.
+
+* On Firefox: 
+
+Firefox natively allow screensharing but doesn't allow more than one stream (*two thanks to a little trick visible in **core.js**).
+ 
 
 #### 2. Setting up local HTTPS environment
 
@@ -59,8 +66,7 @@ Whatever you feel adding would be great. Additionnally feel free to help on the 
 ### What is really next?
 
 * Debug the resizing functionality (dimensions are not good)
-* Add curves? 
-* Add Firefox extension to extend compatibility with browsers
+* Add curves?
 * Compatibility with Vive
 * Multiplayer (using WebRTC)
 * Other things as well
