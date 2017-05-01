@@ -1959,13 +1959,14 @@
 
 	  _createClass(NetworkEntities, [{
 	    key: 'createNetworkEntity',
-	    value: function createNetworkEntity(template, position, rotation) {
+	    value: function createNetworkEntity(template, appendTo, position, rotation) {
 	      var networkId = this.createEntityId();
 	      NAF.log.write('Created network entity', networkId);
 	      var entityData = {
 	        networkId: networkId,
 	        owner: NAF.clientId,
 	        template: template,
+	        appendTo: appendTo,
 	        components: {
 	          position: position,
 	          rotation: rotation
@@ -1976,8 +1977,8 @@
 	    }
 	  }, {
 	    key: 'createAvatar',
-	    value: function createAvatar(template, position, rotation) {
-	      var avatar = this.createNetworkEntity(template, position, rotation);
+	    value: function createAvatar(template, appendTo, position, rotation) {
+	      var avatar = this.createNetworkEntity(template, appendTo, position, rotation);
 	      avatar.setAttribute('visible', false);
 	      avatar.setAttribute('follow-entity', '[camera]');
 	      avatar.className += ' local-avatar';
@@ -2008,8 +2009,9 @@
 
 	      entity.initNafData = entityData;
 
-	      var scene = document.querySelector('a-scene');
-	      scene.appendChild(entity);
+	      /*var appendTo = document.querySelector(entityData.appendTo);*/
+        var appendTo = document.querySelector("#" + entityData.appendTo);
+	      appendTo.appendChild(entity);
 	      this.entities[entityData.networkId] = entity;
 
 	      return entity;
@@ -2820,6 +2822,7 @@
 	      0: 0, // 0 for not compressed
 	      networkId: this.data.networkId,
 	      owner: this.data.owner,
+        appendTo: this.el.parentEl.id,
 	      template: '',
 	      components: components
 	    };

@@ -9,6 +9,7 @@
     <script src="assets/scripts/aframe.min.js"></script> 
     <script src="assets/scripts/aframe-teleport-controls.min.js"></script>
     <script src="assets/scripts/aframe-controller-cursor-component.js"></script>
+    <script src="assets/scripts/aframe-fit-texture-component.min.js"></script>
 
     <!-- Multiplayer features !-->
     <script src="assets/scripts/socket.io.min.js"></script>
@@ -34,7 +35,7 @@
       <a-entity id="leftController"   oculus-touch-controls="hand: left"  teleport-controls="button: thumbstick"></a-entity>
       <a-entity id="rightController"  oculus-touch-controls="hand: right" teleport-controls="button: thumbstick" controller-cursor raycaster="objects: #creationBox,#video"></a-entity>
 
-      <a-video height="3" width="6" position="0 1.5 -5" class="desktop" id="video"></a-video>
+      <a-video height="3" width="6" position="0 1.5 -5" class="desktop" id="video" fit-texture></a-video>
 
       <a-sky src="#environment" rotation="0 -130 0"></a-sky>
 
@@ -44,11 +45,6 @@
           <a-sphere color="white" radius="0.1" position="-0.2 0.1 -0.4"></a-sphere>
         </a-sphere>
       </script>
-
-      <script id="screen-template" type="text/html">
-        <a-video height="3" width="6" id="video" class="desktop"></a-video>
-      </script>
-
     </a-scene>
 
     <script src="core.js"></script>

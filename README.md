@@ -66,7 +66,6 @@ Whatever you feel adding would be great. Additionnally feel free to help on the 
 
 ### What is really next?
 
-* Debug the resizing functionality (dimensions are not good)
 * Add curves?
 * Compatibility with Vive
 * Multiplayer (using WebRTC)

@@ -60,19 +60,20 @@ window.addEventListener("load", function(){
     // We create a video container
     var newScreenId = generateId(14);
     var newScreen = document.createElement("a-video");
-    newScreen.setAttribute("src"      , "");
-    newScreen.setAttribute("position" , evt.detail.intersection.point);
-    newScreen.setAttribute("width"    , "6");
-    newScreen.setAttribute("height"   , "3");
-    newScreen.setAttribute("id"       , "video")
-    newScreen.setAttribute("class"    , newScreenId)
-    newScreen.setAttribute("rotation" , AFRAME.utils.coordinates.stringify(RIGHT_CONTROLLER.components.rotation.data));
+    newScreen.setAttribute("src"          , "");
+    newScreen.setAttribute("position"     , evt.detail.intersection.point);
+    newScreen.setAttribute("width"        , "6");
+    newScreen.setAttribute("height"       , "3");
+    newScreen.setAttribute("id"           , "video")
+    newScreen.setAttribute("class"        , newScreenId)
+    newScreen.setAttribute("fit-texture"  , "")
+    newScreen.setAttribute("rotation"     , AFRAME.utils.coordinates.stringify(RIGHT_CONTROLLER.components.rotation.data));
     SCENE.appendChild(newScreen);
 
     toggleConstructionMode();
 
     // We verify if its Firefox or not for the screen sharing
-    (_isFirefox) ? shareScreen(newScreenId, "") : window.postMessage({ name: 'webVrStartCasting', newScreenId: newScreenId }, '*');
+    (_isFirefox) ? shareScreen(newScreenId) : window.postMessage({ name: 'webVrStartCasting', newScreenId: newScreenId }, '*');
   });
 
   //####################//
@@ -85,6 +86,7 @@ window.addEventListener("load", function(){
     if(_videoSelected) {
       _videoSelected.setAttribute("height"  ,   Number(_videoSelected.getAttribute("height")) + 0.5);
       _videoSelected.setAttribute("width"   ,   Number(_videoSelected.getAttribute("width"))  + 0.5);
+      _videoSelected.components["fit-texture"].update();
     }
 
     if(_changeEnvironment !== false) {
@@ -99,6 +101,7 @@ window.addEventListener("load", function(){
     if(_videoSelected) {
       _videoSelected.setAttribute("height"  ,   Number(_videoSelected.getAttribute("height")) - 0.5);
       _videoSelected.setAttribute("width"   ,   Number(_videoSelected.getAttribute("width"))  - 0.5);
+      _videoSelected.components["fit-texture"].update();
     }
 
     if(_changeEnvironment !== false) {
@@ -142,9 +145,11 @@ window.addEventListener("load", function(){
       wireframe.setAttribute('color'    , 'blue');
       wireframe.setAttribute('id'       , 'creationBox');
       RIGHT_CONTROLLER.appendChild(wireframe);
+      RIGHT_CONTROLLER.updateComponentProperty("raycaster", "initialized", false);
     } else { // If the player is already in "construction mode"
       // We remove the blue wireframe and the raycaster
       RIGHT_CONTROLLER.removeChild(document.querySelector("#creationBox"));
+      RIGHT_CONTROLLER.components.raycaster.initialized = false;
     }
 
     _constructionMode = !_constructionMode; // We toggle the construction mode
