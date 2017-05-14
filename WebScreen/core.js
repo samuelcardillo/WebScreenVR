@@ -5,11 +5,11 @@ const LEFT_CONTROLLER   = document.querySelector("#leftController");
 const RIGHT_CONTROLLER  = document.querySelector("#rightController");
 
 /* System variables */
-var _isFirefox          = (!!navigator.mozGetUserMedia) ? true : false;
-var _constructionMode   = false;
-var _changeEnvironment  = false;
-var _videoSelected      = false;
-var _environments       = ["env0.jpg","env1.jpeg"];
+var _isFirefox            = (!!navigator.mozGetUserMedia) ? true : false;
+var _constructionMode     = false;
+var _changeEnvironment    = false;
+var _videoSelected        = false;
+var _environments         = ["env0.jpg","env1.jpeg"];
 
 function onConnect () {
    NAF.entities.createAvatar('#avatar-template', "scene", '0 1.6 0', '0 0 0');
@@ -55,6 +55,12 @@ window.addEventListener("load", function(){
 
   // We listen for 'click' event that comes when "construction mode" is active
   RIGHT_CONTROLLER.addEventListener("click", function(evt) {
+    // Will be extended for closing other windows as well
+    if(evt.detail.intersectedEl.id == "closeBtn") {
+      // GLOBAL_CAMERA will have to be SCENE as well
+      GLOBAL_CAMERA.removeChild(evt.detail.intersectedEl.parentEl);
+    }
+
     if(evt.detail.intersectedEl.id != "creationBox") return;
 
     // We create a video container
@@ -163,8 +169,17 @@ window.addEventListener("load", function(){
   }
 });
 
-// Screen sharing operations
-if(_isFirefox) shareScreen("desktop"); // If its Firefox we have to directly called the function
+// Launching the webcam before the screens
+navigator.mediaDevices.getUserMedia({video: true}).then(function(stream) {
+  // And we transfrom the stream to a blob that we apply as a source on the selected screen
+  document.querySelector(".webcam").setAttribute("src", URL.createObjectURL(stream));
+
+  (_isFirefox) ? shareScreen("desktop") : window.postMessage({ name: 'webVrStartCasting', newScreenId: "desktop" }, '*');
+}).catch(function(err) {
+  SCENE.removeChild(document.querySelector(".webcam"));
+
+  (_isFirefox) ? shareScreen("desktop") : window.postMessage({ name: 'webVrStartCasting', newScreenId: "desktop" }, '*');
+});
 
 // Function that handle the different browser cases for screen sharing
 function shareScreen(screenId, eventId) {

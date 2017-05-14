@@ -31,9 +31,14 @@
         <img id="environment" src="assets/images/env0.jpg">
       </a-assets>
 
-      <a-camera></a-camera>
+      <a-camera wasd-controls="enabled: false;">
+        <a-video height="0.3" width="1" position="0 -0.3 -0.7" rotation="-50 0 -0.573" class="webcam">
+          <a-circle color="red" id="closeBtn" radius="0.02" position="0.447 0.109 0.001"></a-circle>
+        </a-video>
+      </a-camera>
+
       <a-entity id="leftController"   oculus-touch-controls="hand: left"  teleport-controls="button: thumbstick"></a-entity>
-      <a-entity id="rightController"  oculus-touch-controls="hand: right" teleport-controls="button: thumbstick" controller-cursor raycaster="objects: #creationBox,#video"></a-entity>
+      <a-entity id="rightController"  oculus-touch-controls="hand: right" teleport-controls="button: thumbstick" controller-cursor raycaster="objects: #creationBox,#video,#closeBtn"></a-entity>
 
       <a-video height="3" width="6" position="0 1.5 -5" class="desktop" id="video" fit-texture></a-video>
 
